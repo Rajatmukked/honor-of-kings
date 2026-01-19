@@ -48,10 +48,21 @@ class PuzzleView(discord.ui.View):
         self.tiles = tiles
         self.empty = tiles.index(EMPTY_TILE)
 
-    async def update(self, interaction):
-        file = discord.File(render_board(self.tiles), filename="puzzle.png")
-        await interaction.response.edit_message(attachments=[file], view=self)
+    async def update(self, interaction: discord.Interaction):
+    file = discord.File(render_board(self.tiles), filename="puzzle.png")
 
+    if interaction.response.is_done():
+        await interaction.followup.edit_message(
+            message_id=interaction.message.id,
+            attachments=[file],
+            view=self
+        )
+    else:
+        await interaction.response.edit_message(
+            attachments=[file],
+            view=self
+        )
+        
     def move(self, delta, interaction):
         new = self.empty + delta
         if 0 <= new < GRID*GRID:
@@ -80,14 +91,16 @@ class PuzzleView(discord.ui.View):
 
 @bot.tree.command(name="puzzle")
 async def puzzle(interaction: discord.Interaction):
+    await interaction.response.defer()  # IMPORTANT
+
     slice_image("puzzles/hok1.png")
-    tiles = list(range(GRID*GRID))
+    tiles = list(range(GRID * GRID))
     random.shuffle(tiles)
 
     view = PuzzleView(tiles)
     file = discord.File(render_board(tiles), filename="puzzle.png")
 
-    await interaction.response.send_message(
+    await interaction.followup.send(
         "🧩 **5×5 Puzzle – Move the tiles!**",
         file=file,
         view=view
