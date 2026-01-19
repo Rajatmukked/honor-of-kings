@@ -7,7 +7,7 @@ import os, random
 TOKEN = os.environ.get("BOT_TOKEN")
 
 if not TOKEN:
-    raise RuntimeError("BOT_TOKEN is not set")"
+    raise RuntimeError("BOT_TOKEN is not set")
 
 intents = discord.Intents.default()
 bot = commands.Bot(command_prefix="!", intents=intents)
