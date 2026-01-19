@@ -4,7 +4,10 @@ from discord import app_commands
 from PIL import Image
 import os, random
 
-TOKEN = "PASTE_YOUR_BOT_TOKEN_HERE"
+TOKEN = os.environ.get("BOT_TOKEN")
+
+if not TOKEN:
+    raise RuntimeError("BOT_TOKEN is not set")"
 
 intents = discord.Intents.default()
 bot = commands.Bot(command_prefix="!", intents=intents)
