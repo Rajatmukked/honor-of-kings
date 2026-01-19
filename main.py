@@ -93,7 +93,7 @@ class PuzzleView(discord.ui.View):
 async def puzzle(interaction: discord.Interaction):
     await interaction.response.defer()  # IMPORTANT
 
-    slice_image("puzzles/hok1.png")
+    slice_image("puzzles/1.jpeg")
     tiles = list(range(GRID * GRID))
     random.shuffle(tiles)
 
